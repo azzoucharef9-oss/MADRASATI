@@ -1,0 +1,32 @@
+{
+  "name": "online-tutoring-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mathematics and physics tutoring platform with live classrooms, dashboards, and attendance tracking.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "npx prisma db push && node server.js",
+    "dev": "nodemon server.js",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate"
+  },
+  "engines": {
+    "node": ">=20.18.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.7.0"
+  }
+}

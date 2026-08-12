@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id            String   @id @default(uuid()) @db.Uuid
+  studentName   String
+  parentPhone   String   @unique
+  level         String
+  paymentStatus     Boolean  @default(false)
+  paymentStage      String   @default("UNPAID")
+  amountDue         Int?
+  mathEnrollment    Boolean  @default(true)
+  physicsEnrollment Boolean  @default(true)
+  liveAccessEnabled Boolean  @default(false)
+  mathNote          String   @default("")
+  physicsNote   String   @default("")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  attendances   Attendance[]
+
+  @@index([level, createdAt(sort: Desc)])
+}
+
+model Attendance {
+  id        String   @id @default(uuid()) @db.Uuid
+  studentId String   @db.Uuid
+  level     String
+  joinedAt  DateTime @default(now())
+
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, joinedAt(sort: Desc)])
+  @@index([level, joinedAt(sort: Desc)])
+}
+
+model Material {
+  id        String   @id @default(uuid()) @db.Uuid
+  title     String
+  fileUrl   String
+  level     String
+  createdAt DateTime @default(now())
+
+  @@index([level, createdAt(sort: Desc)])
+}

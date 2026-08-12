@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة الأستاذ | أكاديمية التفوق</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/app.css" />
+</head>
+<body class="dashboard-page">
+  <header class="dashboard-header">
+    <a class="brand-link" href="./index.html">أكاديمية التفوق</a>
+    <nav><a href="./teacher-live.html">الاستوديو المباشر</a><button id="logout-btn" class="link-button">تسجيل الخروج</button></nav>
+  </header>
+  <main class="dashboard-main">
+    <section class="dashboard-intro"><p class="eyebrow">لوحة الإدارة</p><h1>إدارة التلاميذ</h1><p id="dashboard-error" class="form-error" hidden></p></section>
+    <section class="level-tabs" aria-label="اختيار المستوى">
+      <button class="level-btn is-active" data-level="السنة الأولى">السنة الأولى</button>
+      <button class="level-btn" data-level="السنة الثانية">السنة الثانية</button>
+      <button class="level-btn" data-level="السنة الثالثة">السنة الثالثة</button>
+      <button class="level-btn" data-level="السنة الرابعة">السنة الرابعة</button>
+    </section>
+    <section class="summary-grid">
+      <article class="summary-card blue"><span>إجمالي التلاميذ</span><strong id="summary-total">0</strong></article>
+      <article class="summary-card green"><span>تم الدفع</span><strong id="summary-paid">0</strong></article>
+      <article class="summary-card red"><span>غير مدفوع</span><strong id="summary-unpaid">0</strong></article>
+    </section>
+    <section class="filter-bar"><input id="student-search" placeholder="البحث باسم التلميذ..." /><select id="payment-filter"><option value="all">الكل</option><option value="paid">مدفوع</option><option value="unpaid">غير مدفوع</option></select><span id="filtered-results-label"></span></section>
+    <section class="table-card"><div class="table-title"><h2 id="current-level-title">السنة الأولى</h2><a class="secondary-action" href="./teacher-live.html">بدء حصة مباشرة</a></div><div class="table-wrap"><table><thead><tr><th>التلميذ</th><th>رقم الولي</th><th>الدفع</th><th>الرياضيات</th><th>الفيزياء</th><th>الإجراءات</th></tr></thead><tbody id="students-table-body"></tbody></table></div><p id="table-empty-state" hidden>لا يوجد تلاميذ مسجلون في هذا المستوى حالياً.</p></section>
+  </main>
+  <div id="edit-modal" class="modal" hidden><div class="modal-card"><button id="cancel-edit-btn" class="modal-close">×</button><h2 id="modal-student-name"></h2><form id="edit-student-form" class="stack-form"><label>ملاحظة الرياضيات<textarea id="math-note"></textarea></label><label>ملاحظة الفيزياء<textarea id="physics-note"></textarea></label><button class="cta-button cta-primary" type="submit">حفظ التعديلات</button></form></div></div>
+  <div id="attendance-modal" class="modal" hidden><div class="modal-card"><button id="close-attendance-modal" class="modal-close">×</button><h2>سجل حضور <span id="attendance-student-name"></span></h2><p id="attendance-empty" hidden>لا توجد سجلات حضور بعد.</p><ul id="attendance-list" class="attendance-list"></ul></div></div>
+  <div id="subscription-modal" class="modal" hidden><div class="modal-card"><button id="close-subscription-modal" class="modal-close" type="button">×</button><p class="eyebrow">إعدادات الاشتراك</p><h2 id="subscription-student-name">التلميذ</h2><form id="subscription-form" class="stack-form"><fieldset><legend>مواد التسجيل</legend><label><input id="subscription-math" type="checkbox" /> الرياضيات</label><label><input id="subscription-physics" type="checkbox" /> الفيزياء</label></fieldset><label>حالة الدفع<select id="subscription-payment-stage" required><option value="PAID">تم الدفع بنجاح</option><option value="UNPAID">لم يتم الدفع — في انتظار الدفع</option><option value="PROMISED">لم يتم الدفع — اتصل بالأستاذ وسيقوم بالدفع</option></select></label><label>المبلغ المطلوب (دج)<input id="subscription-amount-due" type="number" min="0" max="10000000" step="1" placeholder="مثال: 3000" /></label><label><input id="subscription-live-access" type="checkbox" /> السماح بدخول الحصة المباشرة</label><button class="cta-button cta-primary" type="submit">حفظ الاشتراك والدفع</button></form></div></div>
+  <div id="toast" class="toast" hidden></div>
+  <script src="./js/teacher-dashboard.js"></script>
+</body>
+</html>

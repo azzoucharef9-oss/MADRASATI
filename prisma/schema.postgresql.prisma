@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id            String   @id @default(uuid()) @db.Uuid
+  studentName   String
+  parentPhone   String   @unique
+  level         String
+  paymentStatus Boolean  @default(false)
+  mathNote      String   @default("")
+  physicsNote   String       @default("")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  attendances   Attendance[]
+
+  // Matches the roster access pattern: equality by level, newest registrations
+  // first. parentPhone remains indexed through its @unique constraint.
+  @@index([level, createdAt(sort: Desc)])
+}
+
+model Attendance {
+  id        String   @id @default(uuid()) @db.Uuid
+  studentId String   @db.Uuid
+  level     String
+  joinedAt  DateTime @default(now())
+
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  // Matches student-history retrieval: one student, newest joins first.
+  @@index([studentId, joinedAt(sort: Desc)])
+  @@index([level, joinedAt(sort: Desc)])
+}
+
+model Material {
+  id        String   @id @default(uuid()) @db.Uuid
+  title     String
+  fileUrl   String
+  level     String
+  createdAt DateTime @default(now())
+
+  // Matches the authorized level-filtered, newest-first material listing query.
+  @@index([level, createdAt(sort: Desc)])
+}

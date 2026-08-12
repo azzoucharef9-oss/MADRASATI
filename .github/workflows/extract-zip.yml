@@ -1,0 +1,47 @@
+name: Extract uploaded Minasaty archive
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract archive into repository root
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f Minasaty-main.zip
+          rm -rf .tmp-minasaty
+          mkdir -p .tmp-minasaty
+          unzip -q Minasaty-main.zip -d .tmp-minasaty
+
+          if [ -d .tmp-minasaty/Minasaty-main ]; then
+            cp -a .tmp-minasaty/Minasaty-main/. .
+          else
+            cp -a .tmp-minasaty/. .
+          fi
+
+          rm -rf .tmp-minasaty Minasaty-main.zip
+
+      - name: Commit extracted files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "Extract Minasaty source files"
+          git push
